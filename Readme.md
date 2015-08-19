@@ -17,6 +17,10 @@ Then run it
 ```
 ./docker-dns --config=/path/to/conf.json
 ```
+Check if it works:
+```
+dig @127.0.0.1 containerName.tld A
+```
 
 # Usage
 ```
