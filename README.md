@@ -45,4 +45,24 @@ sudo systemctl start docker-dns.service
 sudo systemctl status docker-dns.service
 ```
 
+## Use it with NetworkManager
+Make sure `dns=dnsmasq` in `/etc/NetworkManager/dnsmasq.d/docker-dns`
+
+```
+[main]
+plugins=ifupdown,keyfile,dnsmasq
+dns=dnsmasq
+
+[ifupdown]
+managed=false
+```
+
+Create file `/etc/NetworkManager/dnsmasq.d/docker-dns`
+```
+server=/docker/127.0.0.1#8053
+```
+
+```
+sudo service network-manager restart
+```
 
