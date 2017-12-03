@@ -14,6 +14,8 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/fsouza/go-dockerclient"
 	"github.com/miekg/dns"
+
+	"github.com/coreos/go-systemd/daemon"
 )
 
 type Config struct {
@@ -115,6 +117,7 @@ func main() {
 	tld := flag.String("tld", "dev.", "TLD to serve")
 	loglevel := flag.String("loglevel", "info", "Logrus loglevel")
 	cFile := flag.String("config", "", "Path to config file")
+	systemd := flag.Bool("systemd", false, "Start as systemd service")
 	createConfig := flag.Bool("createConfig", false, "Print default config file to stdout")
 
 	flag.Usage = func() {
@@ -179,6 +182,9 @@ func main() {
 
 	sig := make(chan os.Signal)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+	if *systemd == true {
+		daemon.SdNotify(false, "READY=1")
+	}
 
 forever:
 	for {

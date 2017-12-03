@@ -1,0 +1,10 @@
+[Unit]
+Description=docker-dns
+
+[Service]
+Type=notify
+Restart=on-failure
+ExecStart=/usr/local/bin/docker-dns --systemd
+
+[Install]
+WantedBy=multi-user.target
