@@ -11,7 +11,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/fsouza/go-dockerclient"
 	"github.com/miekg/dns"
 
@@ -36,62 +36,6 @@ func stripTLD(reqName string, tld string) string {
 	return name[0 : len(name)-1]
 }
 
-func findContainerIP(id string) (ip net.IP, err error) {
-
-	var c *docker.Container
-	alias, isAlias := conf.Aliases[id]
-
-	if isAlias {
-		id = alias
-	}
-
-	c, err = dockerClient.InspectContainer(id)
-
-	if err != nil {
-		logrus.WithFields(logrus.Fields{"isAlias": isAlias, "id": id, "err": err}).Debug("Failed to find container by name or id")
-		return
-	}
-
-	ip = net.ParseIP(c.NetworkSettings.IPAddress).To4()
-
-	return
-}
-
-func createAnswer(q dns.Question) (ans *dns.A, err error) {
-	ans = new(dns.A)
-	ans.Hdr = dns.RR_Header{
-		Name:   q.Name,
-		Rrtype: dns.TypeA,
-		Class:  dns.ClassINET,
-		Ttl:    conf.TTL,
-	}
-
-	ip, err := findContainerIP(stripTLD(q.Name, conf.TLD))
-	if err != nil {
-		return
-	}
-	ans.A = ip
-
-	return
-}
-
-func handleDns(w dns.ResponseWriter, r *dns.Msg) {
-	m := new(dns.Msg)
-	m.SetReply(r)
-
-	for _, q := range r.Question {
-		ans, err := createAnswer(q)
-		if err == nil {
-			m.Answer = append(m.Answer, ans)
-		} else {
-			logrus.WithFields(logrus.Fields{"err": err, "question": q}).Error("Could not answer")
-		}
-	}
-
-	if err := w.WriteMsg(m); err != nil {
-		logrus.WithField("err", err).Error("Failed to write response")
-	}
-}
 
 func loadConfig(path string) (conf *Config, err error) {
 	conf = new(Config)
