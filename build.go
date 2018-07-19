@@ -18,6 +18,9 @@ import (
 	"strconv"
 )
 
+// dunno, why i am trying to build go with go. Seen in grafana project,
+// looked cool, stole most of code :)
+
 var (
 	//versionRe = regexp.MustCompile(`-[0-9]{1,3}-g[0-9a-f]{5,10}`)
 	goarch  string

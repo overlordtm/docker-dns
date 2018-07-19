@@ -1,132 +1,79 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
-	"fmt"
-	"io/ioutil"
-	"net"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 
 	"github.com/sirupsen/logrus"
-	"github.com/fsouza/go-dockerclient"
-	"github.com/miekg/dns"
-
 	"github.com/coreos/go-systemd/daemon"
+	"docker-dns/pkg/config"
+	"docker-dns/pkg/server"
 )
 
-type Config struct {
-	TLD            string
-	TTL            uint32
-	Listen         string
-	DockerEndpoint string
-	Aliases        map[string]string
-}
-
-var (
-	dockerClient *docker.Client
-	conf         *Config
+const (
+	DEFAULT_CONFIG_PATH = "/etc/docker-dns/config.json"
+	DEFAULT_DOCKER_ADDR = "unix:///var/run/docker.sock"
+	DEFAULT_LISTEN_ADDR = "127.0.0.1:8053"
 )
-
-func stripTLD(reqName string, tld string) string {
-	name := strings.TrimSuffix(reqName, tld)
-	return name[0 : len(name)-1]
-}
-
-
-func loadConfig(path string) (conf *Config, err error) {
-	conf = new(Config)
-
-	c, err := ioutil.ReadFile(path)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(c, conf)
-	if err != nil {
-		return
-	}
-
-	return
-}
 
 func main() {
-	var err error
-	lAddr := flag.String("listen", "127.0.0.1:8053", "Listen address")
-	dAddr := flag.String("docker", "unix:///var/run/docker.sock", "Address for docker client (HTTP or Unix)")
-	ttl := flag.Uint64("ttl", uint64(60), "Default TTL")
-	tld := flag.String("tld", "dev.", "TLD to serve")
-	loglevel := flag.String("loglevel", "info", "Logrus loglevel")
-	cFile := flag.String("config", "", "Path to config file")
-	systemd := flag.Bool("systemd", false, "Start as systemd service")
-	createConfig := flag.Bool("createConfig", false, "Print default config file to stdout")
+	var (
+		err            error
+		listenAddr     string
+		dockerAddr     string
+		ttl            uint64
+		tld            string
+		logLevel       string
+		configFilePath string
+		systemd        bool
+		createConfig   bool
+
+		conf *config.Config
+	)
+
+	flag.StringVar(&listenAddr, "listen", "", "Listen address")
+	flag.StringVar(&dockerAddr, "docker", "", "Address for docker client (HTTP or Unix)")
+	flag.StringVar(&tld, "tld", "", "TLD to serve")
+	flag.StringVar(&logLevel, "loglevel", "info", "Logrus loglevel")
+	flag.StringVar(&configFilePath, "config", "", "Path to config file")
+	flag.Uint64Var(&ttl, "ttl", 0, "Default TTL")
+	flag.BoolVar(&systemd, "systemd", false, "Start as systemd service")
 
 	flag.Usage = func() {
 		flag.PrintDefaults()
 	}
 	flag.Parse()
 
-	lvl, err := logrus.ParseLevel(*loglevel)
+	// logging setup
+	lvl, err := logrus.ParseLevel(logLevel)
 	if err != nil {
 		logrus.WithField("err", err).Fatal("Failed to parse log level")
 	}
 	logrus.SetLevel(lvl)
 
-	if *cFile != "" && *createConfig == false {
-		conf, err = loadConfig(*cFile)
+	if configFilePath != "" && createConfig == false {
+		conf, err = config.ReadConfig(configFilePath)
 		if err != nil {
 			logrus.WithField("err", err).Fatal("Failed to load config")
 		}
 	} else {
-		conf = new(Config)
-	}
-
-	if conf.TLD == "" {
-		conf.TLD = *tld
-	}
-
-	if conf.Listen == "" {
-		conf.Listen = *lAddr
-	}
-
-	if conf.DockerEndpoint == "" {
-		conf.DockerEndpoint = *dAddr
-	}
-
-	if conf.TTL < uint32(*ttl) {
-		conf.TTL = uint32(*ttl)
-	}
-
-	if *createConfig {
-		conf.Aliases = map[string]string{"someHost.tld": "containerIdOrName"}
-		bytes, _ := json.MarshalIndent(conf, "", "  ")
-		fmt.Println(string(bytes))
-		return
+		conf = new(config.Config)
 	}
 
 	logrus.WithField("config", conf).Info("Starting server")
 
-	dockerClient, err = docker.NewClient(conf.DockerEndpoint)
+	srv := server.New(conf)
 	if err != nil {
 		logrus.WithField("err", err).Fatal("Failed to create docker client")
 	}
 
-	dns.HandleFunc(conf.TLD, handleDns)
-
-	go func() {
-		server := &dns.Server{Addr: conf.Listen, Net: "udp"}
-		err := server.ListenAndServe()
-		if err != nil {
-			logrus.WithField("err", err).Fatal("Failed to setup server")
-		}
-	}()
+	go srv.Handle()
 
 	sig := make(chan os.Signal)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
-	if *systemd == true {
+	if systemd == true {
 		daemon.SdNotify(false, "READY=1")
 	}
 
