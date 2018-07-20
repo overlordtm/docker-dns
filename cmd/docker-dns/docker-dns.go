@@ -8,8 +8,8 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/coreos/go-systemd/daemon"
-	"docker-dns/pkg/config"
-	"docker-dns/pkg/server"
+	"github.com/overlordtm/docker-dns/pkg/config"
+	"github.com/overlordtm/docker-dns/pkg/server"
 )
 
 const (

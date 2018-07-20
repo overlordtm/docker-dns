@@ -13,22 +13,6 @@
   revision = "d6e3b3328b783f23731bc4d058875b0371ff8109"
 
 [[projects]]
-  branch = "2.x"
-  digest = "1:5fb9305900d6f7c94d6f663880185504bb0ac9b149d02f73966a31ed04000ebb"
-  name = "github.com/Masterminds/semver"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "3c92f33da7a84de8314f3ff82e5f919b89fd1492"
-
-[[projects]]
-  digest = "1:e8e97d3c5df6c44e650dbf87090ad7cba352415574067214c2f0ff8964c43869"
-  name = "github.com/Masterminds/vcs"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "6f1c6d150500e452704e9863f68c2559f58616bf"
-  version = "v1.12.0"
-
-[[projects]]
   digest = "1:ecb7add8f182eecd55b46fa6d06875483f6d8e9e63ed6ec0c308518d161cf37d"
   name = "github.com/Microsoft/go-winio"
   packages = ["."]
@@ -43,22 +27,6 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "cd527374f1e5bff4938207604a14f2e38a9cf512"
-
-[[projects]]
-  branch = "master"
-  digest = "1:9fd3a6ab34bb103ba228eefd044d3f9aa476237ea95a46d12e8cccd3abf3fea2"
-  name = "github.com/armon/go-radix"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "1fca145dffbcaa8fe914309b1ec0cfc67500fe61"
-
-[[projects]]
-  digest = "1:0f98f59e9a2f4070d66f0c9c39561f68fcd1dc837b22a852d28d0003aebd1b1e"
-  name = "github.com/boltdb/bolt"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
-  version = "v1.3.1"
 
 [[projects]]
   digest = "1:fc8dbcc2a5de7c093e167828ebbdf551641761d2ad75431d3a167d467a264115"
@@ -148,65 +116,12 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:a3a3aaf64d5ba361421b57c2d3885256adf51d5b7645ffcc0c28e9c4fa60980b"
-  name = "github.com/golang/dep"
-  packages = [
-    ".",
-    "gps",
-    "gps/internal/pb",
-    "gps/paths",
-    "gps/pkgtree",
-    "gps/verify",
-    "internal/feedback",
-    "internal/fs",
-    "internal/importers",
-    "internal/importers/base",
-    "internal/importers/glide",
-    "internal/importers/glock",
-    "internal/importers/godep",
-    "internal/importers/govend",
-    "internal/importers/govendor",
-    "internal/importers/gvt",
-    "internal/importers/importertest",
-    "internal/importers/vndr",
-    "internal/test",
-    "internal/test/integration",
-  ]
-  pruneopts = "UT"
-  revision = "45be32ba4708aad5e2aa8c86f9432c4c4c1f8da2"
-
-[[projects]]
-  digest = "1:15042ad3498153684d09f393bbaec6b216c8eec6d61f63dff711de7d64ed8861"
-  name = "github.com/golang/protobuf"
-  packages = ["proto"]
-  pruneopts = "UT"
-  revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
-  version = "v1.1.0"
-
-[[projects]]
-  digest = "1:dcb3e2ad17349c0cc89ffc16692d05195e6a67b4924fe81760fba9a307a7271d"
-  name = "github.com/jmank88/nuts"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "8b28145dffc87104e66d074f62ea8080edfad7c8"
-  version = "v0.3.0"
-
-[[projects]]
   digest = "1:463e4140189f8194f9121ca1c7fe3b8e9e9a2ab3d949b43c835c21034927dc62"
   name = "github.com/miekg/dns"
   packages = ["."]
   pruneopts = "UT"
   revision = "5a2b9fab83ff0f8bfc99684bd5f43a37abe560f1"
   version = "v1.0.8"
-
-[[projects]]
-  branch = "master"
-  digest = "1:6491080aa184f88c2bb8e2f6056e5e0e9a578b2d8666efbd6e97bc37a0c41e72"
-  name = "github.com/nightlyone/lockfile"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "0ad87eef1443f64d3d8c50da647e2b1552851124"
 
 [[projects]]
   digest = "1:ee4d4af67d93cc7644157882329023ce9a7bcfce956a079069a9405521c7cc8d"
@@ -235,28 +150,12 @@
   revision = "ad0f5255060d36872be04de22f8731f38ef2d7b1"
 
 [[projects]]
-  digest = "1:95741de3af260a92cc5c7f3f3061e85273f5a81b5db20d4bd68da74bd521675e"
-  name = "github.com/pelletier/go-toml"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "c01d1270ff3e442a8a57cddc1c92dc1138598194"
-  version = "v1.2.0"
-
-[[projects]]
   digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
   pruneopts = "UT"
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
-
-[[projects]]
-  branch = "master"
-  digest = "1:3b2f0fcb35e10e0f7845f2182e4dd22f5a6fe3db5d1044ca815d646992a2444f"
-  name = "github.com/sdboyer/constext"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "836a144573533ea4da4e6929c235fd348aed1c80"
 
 [[projects]]
   digest = "1:9e9193aa51197513b3abcb108970d831fbcf40ef96aa845c4f03276e1fa316d2"
@@ -280,11 +179,10 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:8f6e3f81fbf6537502cfccb3a64aae24b0dc87f0a34c8a28222f16313d32919d"
+  digest = "1:809955aecc90b55dbed131c7a47d523f347b7dc64726732cfb5e437748729798"
   name = "golang.org/x/net"
   packages = [
     "bpf",
-    "context",
     "internal/iana",
     "internal/socket",
     "ipv4",
@@ -292,14 +190,6 @@
   ]
   pruneopts = "UT"
   revision = "d0887baf81f4598189d4e12a37c6da86f0bba4d0"
-
-[[projects]]
-  branch = "master"
-  digest = "1:39ebcc2b11457b703ae9ee2e8cca0f68df21969c6102cb3b705f76cca0ea0239"
-  name = "golang.org/x/sync"
-  packages = ["errgroup"]
-  pruneopts = "UT"
-  revision = "1d60e4601c6fd243af51cc01ddf169918a5407ca"
 
 [[projects]]
   branch = "master"
@@ -312,54 +202,14 @@
   pruneopts = "UT"
   revision = "ac767d655b305d4e9612f5f6e33120b9176c4ad4"
 
-[[projects]]
-  digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"
-  name = "gopkg.in/yaml.v2"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
-  version = "v2.2.1"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/Masterminds/semver",
-    "github.com/Masterminds/vcs",
-    "github.com/armon/go-radix",
-    "github.com/boltdb/bolt",
     "github.com/coreos/go-systemd/daemon",
     "github.com/fsouza/go-dockerclient",
-    "github.com/golang/dep",
-    "github.com/golang/dep/gps",
-    "github.com/golang/dep/gps/internal/pb",
-    "github.com/golang/dep/gps/paths",
-    "github.com/golang/dep/gps/pkgtree",
-    "github.com/golang/dep/gps/verify",
-    "github.com/golang/dep/internal/feedback",
-    "github.com/golang/dep/internal/fs",
-    "github.com/golang/dep/internal/importers",
-    "github.com/golang/dep/internal/importers/base",
-    "github.com/golang/dep/internal/importers/glide",
-    "github.com/golang/dep/internal/importers/glock",
-    "github.com/golang/dep/internal/importers/godep",
-    "github.com/golang/dep/internal/importers/govend",
-    "github.com/golang/dep/internal/importers/govendor",
-    "github.com/golang/dep/internal/importers/gvt",
-    "github.com/golang/dep/internal/importers/importertest",
-    "github.com/golang/dep/internal/importers/vndr",
-    "github.com/golang/dep/internal/test",
-    "github.com/golang/dep/internal/test/integration",
-    "github.com/golang/protobuf/proto",
-    "github.com/jmank88/nuts",
     "github.com/miekg/dns",
-    "github.com/nightlyone/lockfile",
-    "github.com/pelletier/go-toml",
-    "github.com/pkg/errors",
-    "github.com/sdboyer/constext",
     "github.com/sirupsen/logrus",
-    "golang.org/x/sync/errgroup",
-    "gopkg.in/yaml.v2",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

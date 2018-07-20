@@ -3,9 +3,9 @@ package server
 import (
 	"github.com/miekg/dns"
 	"github.com/sirupsen/logrus"
-	"docker-dns/pkg/config"
 	"strings"
-	"docker-dns/pkg/docker"
+	"github.com/overlordtm/docker-dns/pkg/docker"
+	"github.com/overlordtm/docker-dns/pkg/config"
 )
 
 type Server struct {

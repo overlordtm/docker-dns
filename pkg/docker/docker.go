@@ -4,7 +4,7 @@ import (
 	"net"
 	"github.com/fsouza/go-dockerclient"
 	"github.com/sirupsen/logrus"
-	"docker-dns/pkg/config"
+	"github.com/overlordtm/docker-dns/pkg/config"
 )
 
 type DockerFinder interface {
