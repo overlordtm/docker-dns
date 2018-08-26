@@ -6,10 +6,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/sirupsen/logrus"
 	"github.com/coreos/go-systemd/daemon"
 	"github.com/overlordtm/docker-dns/pkg/config"
 	"github.com/overlordtm/docker-dns/pkg/server"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -71,6 +71,8 @@ func main() {
 
 	go srv.Handle()
 
+	logrus.Info("Server started")
+
 	sig := make(chan os.Signal)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 	if systemd == true {
@@ -81,6 +83,7 @@ forever:
 	for {
 		select {
 		case _ = <-sig:
+			logrus.WithField("signal", sig).Info("Signal received, terminating")
 			break forever
 		}
 	}

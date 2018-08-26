@@ -4,7 +4,7 @@ Description=docker-dns
 [Service]
 Type=notify
 Restart=on-failure
-ExecStart=/usr/local/bin/docker-dns --systemd
+ExecStart=/usr/local/bin/docker-dns -config=/etc/docker-dns.json -systemd
 
 [Install]
 WantedBy=multi-user.target

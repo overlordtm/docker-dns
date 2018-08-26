@@ -1,11 +1,12 @@
 package server
 
 import (
-	"github.com/miekg/dns"
-	"github.com/sirupsen/logrus"
 	"strings"
-	"github.com/overlordtm/docker-dns/pkg/docker"
+
+	"github.com/miekg/dns"
 	"github.com/overlordtm/docker-dns/pkg/config"
+	"github.com/overlordtm/docker-dns/pkg/docker"
+	"github.com/sirupsen/logrus"
 )
 
 type Server struct {
@@ -36,13 +37,11 @@ func New(conf *config.Config) *Server {
 }
 
 func (s *Server) Handle() {
-	go func() {
-		server := &dns.Server{Addr: s.conf.Listen, Net: "udp"}
-		err := server.ListenAndServe()
-		if err != nil {
-			logrus.WithField("err", err).Fatal("Failed to setup server")
-		}
-	}()
+	server := &dns.Server{Addr: s.conf.Listen, Net: "udp"}
+	err := server.ListenAndServe()
+	if err != nil {
+		logrus.WithField("err", err).Fatal("Failed to setup server")
+	}
 }
 
 func (s *Server) createAnswer(q dns.Question) (ans *dns.A, err error) {
@@ -67,7 +66,10 @@ func (s *Server) handleDns(w dns.ResponseWriter, r *dns.Msg) {
 	m := new(dns.Msg)
 	m.SetReply(r)
 
+	logrus.WithFields(logrus.Fields{"req": r}).Debug("handleDns")
+
 	for _, q := range r.Question {
+		logrus.WithFields(logrus.Fields{"question": q}).Debug("Got question")
 		ans, err := s.createAnswer(q)
 		if err == nil {
 			m.Answer = append(m.Answer, ans)

@@ -2,9 +2,11 @@ package docker
 
 import (
 	"net"
-	"github.com/fsouza/go-dockerclient"
-	"github.com/sirupsen/logrus"
+	"strings"
+
+	docker "github.com/fsouza/go-dockerclient"
 	"github.com/overlordtm/docker-dns/pkg/config"
+	"github.com/sirupsen/logrus"
 )
 
 type DockerFinder interface {
@@ -31,7 +33,6 @@ func New(config *config.Config) (d *DockerFinderImpl, err error) {
 }
 
 func (dc *DockerFinderImpl) FindContainerIP(id string) (ip net.IP, err error) {
-
 	var c *docker.Container
 	isAlias := false
 	alias, isAlias := dc.config.Aliases[id]
@@ -39,6 +40,7 @@ func (dc *DockerFinderImpl) FindContainerIP(id string) (ip net.IP, err error) {
 	if isAlias {
 		id = alias
 	}
+	logrus.WithFields(logrus.Fields{"containerID": id, "isAlias": isAlias}).Debug("FindContainerIP")
 
 	c, err = dc.dockerClient.InspectContainer(id)
 
@@ -47,7 +49,18 @@ func (dc *DockerFinderImpl) FindContainerIP(id string) (ip net.IP, err error) {
 		return
 	}
 
-	ip = net.ParseIP(c.NetworkSettings.IPAddress).To4()
+	if c.NetworkSettings.IPAddress != "" {
+		ip = net.ParseIP(c.NetworkSettings.IPAddress).To4()
+	} else {
+		for name, network := range c.NetworkSettings.Networks {
+			if strings.Contains(strings.ToLower(name), "default") {
+				ip = net.ParseIP(network.IPAddress).To4()
+				break
+			}
+		}
+	}
+
+	logrus.WithField("dockerResponse", c.NetworkSettings).Debug("Docker response")
 
 	return
 }
