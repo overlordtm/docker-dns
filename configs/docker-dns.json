@@ -1,0 +1,7 @@
+{
+    "TLD": "docker.",
+    "TTL": 60,
+    "Listen": "127.0.0.1:8053",
+    "DockerEndpoint": "unix:///var/run/docker.sock",
+    "Aliases": {}
+}
